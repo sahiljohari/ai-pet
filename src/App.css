@@ -162,7 +162,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  margin-left: -11px;
+  margin-top: -11px;
   display: flex;
   align-items: center;
   justify-content: center;

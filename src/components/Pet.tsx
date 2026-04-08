@@ -19,8 +19,8 @@ export function Pet({ state, onPet }: PetProps) {
       const centerY = rect.top + rect.height * 0.35;
       const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
       const distance = Math.min(
-        Math.hypot(e.clientX - centerX, e.clientY - centerY) / 25,
-        6,
+        Math.hypot(e.clientX - centerX, e.clientY - centerY) / 15,
+        12,
       );
       setEyeOffset({
         x: Math.cos(angle) * distance,
