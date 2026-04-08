@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { PetState, PetMood } from '../types/pet';
 import { decideAutonomousAction } from '../services/personality';
+import config from '../data/ember.json';
 
 interface UseAutonomousBehaviorProps {
   state: PetState;
@@ -14,17 +15,20 @@ export function useAutonomousBehavior({ state, onMoodChange }: UseAutonomousBeha
   useEffect(() => {
     if (state.mood !== 'idle') return;
 
+    const [minMs, maxMs] = config.autonomousBehavior.checkIntervalMs;
+
     const check = () => {
       const action = decideAutonomousAction(state);
       if (action.type === 'mood') {
         onMoodChange(action.mood);
-        // Auto-resolve back to idle
-        timeoutRef.current = setTimeout(() => onMoodChange('idle'), 3000);
+        timeoutRef.current = setTimeout(
+          () => onMoodChange('idle'),
+          config.autonomousBehavior.autoResolveMs,
+        );
       }
     };
 
-    // Check every 8-15 seconds
-    intervalRef.current = setInterval(check, 8000 + Math.random() * 7000);
+    intervalRef.current = setInterval(check, minMs + Math.random() * (maxMs - minMs));
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);

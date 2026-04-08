@@ -1,16 +1,24 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { PetState, PetMood, PetAction, PetStats } from '../types/pet';
+import config from '../data/ember.json';
+import { evaluateCondition } from '../services/conditions';
 
-const INITIAL_STATS: PetStats = {
-  happiness: 70,
-  energy: 80,
-  hunger: 30,
-  love: 50,
-};
+interface ActionConfig {
+  mood: string;
+  stats: Record<string, number>;
+  durationMs: number;
+  override?: {
+    condition: { stat: string; op: string; value: number };
+    mood: string;
+    stats: Record<string, number>;
+  };
+}
+
+const clamp = (v: number) => Math.max(0, Math.min(100, v));
 
 const INITIAL_STATE: PetState = {
   mood: 'idle',
-  stats: INITIAL_STATS,
+  stats: { ...config.stats.initial } as PetStats,
   isBlinking: false,
   lastInteraction: Date.now(),
 };
@@ -39,99 +47,59 @@ export function usePetState() {
 
   // Gradual stat decay
   useEffect(() => {
+    const decay = config.stats.decayPerTick;
     const interval = setInterval(() => {
       setState(prev => ({
         ...prev,
         stats: {
-          happiness: Math.max(0, prev.stats.happiness - 0.3),
-          energy: Math.max(0, prev.stats.energy - 0.2),
-          hunger: Math.min(100, prev.stats.hunger + 0.4),
-          love: Math.max(0, prev.stats.love - 0.15),
+          happiness: clamp(prev.stats.happiness + decay.happiness),
+          energy: clamp(prev.stats.energy + decay.energy),
+          hunger: clamp(prev.stats.hunger + decay.hunger),
+          love: clamp(prev.stats.love + decay.love),
         },
       }));
-    }, 3000);
+    }, config.stats.decayIntervalMs);
     return () => clearInterval(interval);
   }, []);
 
   const performAction = useCallback((action: PetAction) => {
     if (moodTimeoutRef.current) clearTimeout(moodTimeoutRef.current);
 
-    setState(prev => {
-      let newMood: PetMood;
-      let statChanges: Partial<PetStats>;
+    const actionCfg = config.actions[action as keyof typeof config.actions] as ActionConfig;
+    if (!actionCfg) return;
 
-      switch (action) {
-        case 'pet':
-          newMood = 'loved';
-          statChanges = {
-            happiness: Math.min(100, prev.stats.happiness + 15),
-            love: Math.min(100, prev.stats.love + 10),
-          };
-          break;
-        case 'feed':
-          newMood = 'eating';
-          statChanges = {
-            hunger: Math.max(0, prev.stats.hunger - 30),
-            happiness: Math.min(100, prev.stats.happiness + 5),
-          };
-          break;
-        case 'play':
-          // If energy is critically low, get dizzy instead
-          if (prev.stats.energy < 15) {
-            newMood = 'dizzy';
-            statChanges = {
-              energy: Math.max(0, prev.stats.energy - 5),
-            };
-          } else {
-            newMood = 'excited';
-            statChanges = {
-              happiness: Math.min(100, prev.stats.happiness + 20),
-              energy: Math.max(0, prev.stats.energy - 15),
-            };
-          }
-          break;
-        case 'sleep':
-          newMood = 'sleepy';
-          statChanges = {
-            energy: Math.min(100, prev.stats.energy + 30),
-          };
-          break;
-        case 'dance':
-          newMood = 'dancing';
-          statChanges = {
-            happiness: Math.min(100, prev.stats.happiness + 25),
-            love: Math.min(100, prev.stats.love + 5),
-            energy: Math.max(0, prev.stats.energy - 10),
-          };
-          break;
-        case 'surprise':
-          newMood = 'surprised';
-          statChanges = {
-            happiness: Math.min(100, prev.stats.happiness + 10),
-          };
-          break;
+    setState(prev => {
+      let mood = actionCfg.mood as PetMood;
+      let statChanges: Record<string, number> = { ...actionCfg.stats };
+
+      if (actionCfg.override && evaluateCondition(actionCfg.override.condition, prev.stats)) {
+        mood = actionCfg.override.mood as PetMood;
+        statChanges = { ...actionCfg.override.stats };
+      }
+
+      const newStats = { ...prev.stats };
+      for (const [stat, delta] of Object.entries(statChanges)) {
+        const key = stat as keyof PetStats;
+        newStats[key] = clamp(newStats[key] + delta);
       }
 
       return {
         ...prev,
-        mood: newMood,
-        stats: { ...prev.stats, ...statChanges },
+        mood,
+        stats: newStats,
         lastInteraction: Date.now(),
       };
     });
 
-    const duration = action === 'sleep' ? 3000 : action === 'dance' ? 3500 : action === 'surprise' ? 1500 : 2000;
     moodTimeoutRef.current = setTimeout(() => {
       setState(prev => {
-        // After actions resolve, check if stats warrant a reactive mood
         const { happiness, energy } = prev.stats;
         if (happiness < 20 && energy > 15) return { ...prev, mood: 'grumpy' };
         if (energy < 10) return { ...prev, mood: 'dizzy' };
         return { ...prev, mood: 'idle' };
       });
-    }, duration);
+    }, actionCfg.durationMs);
 
-    // Grumpy/dizzy auto-resolve to idle after a bit
     if (['surprise'].includes(action)) return;
     const autoIdleTimeout = setTimeout(() => {
       setState(prev => {

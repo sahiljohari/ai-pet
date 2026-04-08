@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PetState } from '../types/pet';
 import { generateThought } from '../services/personality';
+import config from '../data/ember.json';
 
 interface ThoughtBubbleProps {
   state: PetState;
@@ -13,30 +14,35 @@ export function ThoughtBubble({ state }: ThoughtBubbleProps) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const { initialDelayMs, intervalMs, displayMs } = config.thoughtBubble;
+
   useEffect(() => {
+    const [minDisplay, maxDisplay] = displayMs;
+    const [minInterval, maxInterval] = intervalMs;
+
     const showThought = () => {
       const text = generateThought(state);
       setThought(text);
       setVisible(true);
 
-      // Hide after 4-6 seconds
       timeoutRef.current = setTimeout(() => {
         setVisible(false);
-      }, 4000 + Math.random() * 2000);
+      }, minDisplay + Math.random() * (maxDisplay - minDisplay));
     };
 
-    // First thought after 3 seconds
-    const initialTimeout = setTimeout(showThought, 3000);
+    const initialTimeout = setTimeout(showThought, initialDelayMs);
 
-    // Then every 12-25 seconds
-    intervalRef.current = setInterval(showThought, 12000 + Math.random() * 13000);
+    intervalRef.current = setInterval(
+      showThought,
+      minInterval + Math.random() * (maxInterval - minInterval),
+    );
 
     return () => {
       clearTimeout(initialTimeout);
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [state.mood]);
+  }, [state.mood, initialDelayMs, intervalMs, displayMs]);
 
   // Also show a thought on mood changes
   useEffect(() => {

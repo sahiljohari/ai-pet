@@ -15,3 +15,14 @@ export interface PetState {
   isBlinking: boolean;
   lastInteraction: number;
 }
+
+export interface Expression {
+  pupilScale: number;
+  eyesClosed: boolean;
+  halfEyes: boolean;
+  starEyes: boolean;
+  blushIntensity: number;
+  glowIntensity: number;
+  mouthClass: string;
+  earDrop: number;
+}

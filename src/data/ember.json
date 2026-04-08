@@ -1,0 +1,254 @@
+{
+  "name": "Ember",
+  "description": "A chibi AI pet that lives in your browser",
+
+  "thoughts": {
+    "idle": [
+      "*looks around curiously* ...what was that?",
+      "hmm... I wonder what clouds taste like ☁️",
+      "*wiggles ears* ...did someone say snacks?",
+      "la la la~ 🎵",
+      "*stares into the void philosophically*",
+      "I bet I could catch my own tail if I really tried...",
+      "what if... I took a little nap right here... 😴",
+      "*pretends to be a statue* 🗿",
+      "is it snack time yet? ...it should be snack time.",
+      "I wonder if the moon is made of cookies 🌙🍪",
+      "*does a tiny spin* wheee~",
+      "you know what would be nice? a head pat.",
+      "*contemplates the meaning of existence* ...nah, cookies."
+    ],
+    "happy": [
+      "hehe~ life is good! ✨",
+      "*bounces around* today is the BEST!",
+      "everything feels so sparkly right now~",
+      "I love everything and everyone!! 💕",
+      "*purrs loudly* mrrrrp~",
+      "this is the happiest I've ever been! ...wait I say that every time"
+    ],
+    "excited": [
+      "YAAAY LET'S GOOOO!! 🎉",
+      "*zoomies intensify* WHEEEEE!",
+      "I can't contain my excitement!! ⭐⭐⭐",
+      "THIS IS AMAZING!! *bounces off walls*",
+      "so much energy!! I could run FOREVER!"
+    ],
+    "sleepy": [
+      "so... sleepy... *yawns* 😴",
+      "five more minutes... zzz...",
+      "*eyelids getting heavy* must... stay... awake...",
+      "maybe just a tiny little nap... 💤",
+      "the world is getting all fuzzy and warm...",
+      "*nods off* ...huh? I wasn't sleeping!"
+    ],
+    "eating": [
+      "nom nom nom~ 🍪",
+      "mmm this is SO good!! *happy chomps*",
+      "food is the best invention ever!",
+      "*stuffs face* mmmrph! 😋",
+      "can I have seconds? ...thirds?"
+    ],
+    "loved": [
+      "*melts into a happy puddle* 💕💕💕",
+      "aaaa I love you too!! 💗",
+      "*purrs so loud the screen shakes* mrrrrRRRRR~",
+      "more pets!! never stop!! 🥰",
+      "I'm the luckiest pet in the whole internet~ ✨",
+      "*nuzzles you* you're the best human ever!"
+    ],
+    "curious": [
+      "ooh! what's THAT over there?! 👀",
+      "*sniff sniff* ...something smells interesting!",
+      "hmm... *tilts head* ...what does this button do?",
+      "*investigates a suspicious shadow* 🔍",
+      "I sense... something... mysterious! ✨",
+      "wait wait wait— did you see that?!",
+      "why are you just... staring at me? 👀",
+      "*stares back intensely* ...I can do this all day.",
+      "are you trying to have a staring contest? BRING IT. 👁️"
+    ],
+    "dancing": [
+      "🎵 shake shake shake~ 🎵",
+      "*busts out sick dance moves* 💃",
+      "I'm a dancing machine!! 🪩",
+      "you can't stop the groove~ 🎶",
+      "everybody dance NOW! ✨💃✨"
+    ],
+    "grumpy": [
+      "hmph. 😤",
+      "*sulks in the corner* ...I'm fine.",
+      "nobody appreciates me around here... 💢",
+      "*angrily stares at nothing* 😠",
+      "maybe if SOMEONE paid attention to me...",
+      "I'm not mad. I'm just... disappointed."
+    ],
+    "dizzy": [
+      "everything is spinning... 🌀",
+      "whoa whoa whoa... *wobbles*",
+      "I see... three of everything... 💫",
+      "maybe I overdid it a little... 😵‍💫",
+      "the room won't stop moving...",
+      "stop moving so fast!! my eyes can't keep up! 🌀",
+      "you're making me dizzy on purpose aren't you!! 😵"
+    ],
+    "surprised": [
+      "AAAH!! 😱",
+      "WHAT WAS THAT?! *jumps three feet*",
+      "you SCARED me!! 💀",
+      "*heart racing* oh my gosh oh my gosh!",
+      "DON'T DO THAT!! ...ok do it again 👀"
+    ],
+    "veryHungry": [
+      "my tummy is growling SO loud... 🍪",
+      "feed me... feeeed meeee... *dramatic collapse*",
+      "I'm wasting away here!! *lies on floor*",
+      "is that... a crumb? *lunges at nothing*",
+      "I would do ANYTHING for a cookie right now."
+    ],
+    "veryTired": [
+      "I can barely keep my eyes open... 😴",
+      "*dragging self across the floor* ...so... tired...",
+      "energy levels: critically low ⚠️",
+      "my brain is buffering... 🔄",
+      "need... sleep... immediately..."
+    ],
+    "verySad": [
+      "*sits alone in the corner* 😢",
+      "does anyone even care about me...?",
+      "I just want someone to play with... 🥺",
+      "*quiet sniffles* ...I'm okay. really.",
+      "why is everything so gray today..."
+    ],
+    "veryLoved": [
+      "I feel SO loved right now!! 💕💕💕",
+      "*overflowing with happiness* you're the BEST!",
+      "my heart is so full it might burst! 💗",
+      "I never want this feeling to end~ ✨"
+    ]
+  },
+
+  "particles": {
+    "loved":     ["💕", "💗", "💖", "✨", "💝"],
+    "happy":     ["✨", "⭐", "💫", "🌟"],
+    "excited":   ["⭐", "🌟", "✨", "💥", "🎉", "🎊"],
+    "eating":    ["🍪", "🍓", "🍰", "✨", "😋"],
+    "sleepy":    ["💤", "⭐", "🌙", "✨"],
+    "curious":   ["❓", "🔍", "✨", "👀"],
+    "dancing":   ["🎵", "🎶", "💃", "✨", "🪩"],
+    "grumpy":    ["💢", "😤", "💨"],
+    "dizzy":     ["💫", "🌀", "⭐", "😵‍💫"],
+    "surprised": ["❗", "⚡", "😱", "✨"],
+    "default":   ["✨"]
+  },
+
+  "expressions": {
+    "idle":      { "pupilScale": 1,    "eyesClosed": false, "halfEyes": false, "starEyes": false, "blushIntensity": 0.3,  "glowIntensity": 0,   "mouthClass": "mouth-smile",      "earDrop": 0 },
+    "happy":     { "pupilScale": 1.1,  "eyesClosed": false, "halfEyes": false, "starEyes": false, "blushIntensity": 0.7,  "glowIntensity": 0.3, "mouthClass": "mouth-happy",      "earDrop": -5 },
+    "excited":   { "pupilScale": 1.3,  "eyesClosed": false, "halfEyes": false, "starEyes": true,  "blushIntensity": 0.8,  "glowIntensity": 0.5, "mouthClass": "mouth-open-happy", "earDrop": -10 },
+    "sleepy":    { "pupilScale": 1,    "eyesClosed": false, "halfEyes": true,  "starEyes": false, "blushIntensity": 0.4,  "glowIntensity": 0,   "mouthClass": "mouth-sleepy",     "earDrop": 8 },
+    "eating":    { "pupilScale": 1,    "eyesClosed": true,  "halfEyes": false, "starEyes": false, "blushIntensity": 0.6,  "glowIntensity": 0,   "mouthClass": "mouth-eating",     "earDrop": -3 },
+    "loved":     { "pupilScale": 1,    "eyesClosed": true,  "halfEyes": false, "starEyes": false, "blushIntensity": 1,    "glowIntensity": 0.6, "mouthClass": "mouth-happy",      "earDrop": -8 },
+    "curious":   { "pupilScale": 1.25, "eyesClosed": false, "halfEyes": false, "starEyes": false, "blushIntensity": 0.3,  "glowIntensity": 0.2, "mouthClass": "mouth-curious",    "earDrop": -12 },
+    "dancing":   { "pupilScale": 1,    "eyesClosed": true,  "halfEyes": false, "starEyes": false, "blushIntensity": 0.7,  "glowIntensity": 0.4, "mouthClass": "mouth-dancing",    "earDrop": -8 },
+    "grumpy":    { "pupilScale": 0.7,  "eyesClosed": false, "halfEyes": false, "starEyes": false, "blushIntensity": 0.05, "glowIntensity": 0,   "mouthClass": "mouth-grumpy",     "earDrop": 12 },
+    "dizzy":     { "pupilScale": 0.6,  "eyesClosed": false, "halfEyes": false, "starEyes": true,  "blushIntensity": 0.3,  "glowIntensity": 0,   "mouthClass": "mouth-dizzy",      "earDrop": 3 },
+    "surprised": { "pupilScale": 1.5,  "eyesClosed": false, "halfEyes": false, "starEyes": false, "blushIntensity": 0.5,  "glowIntensity": 0.3, "mouthClass": "mouth-surprised",  "earDrop": -15 }
+  },
+
+  "statDrivenExpressions": [
+    { "condition": { "stat": "energy",    "op": "<", "value": 25 }, "overrides": { "halfEyes": true, "mouthClass": "mouth-sleepy", "earDrop": 6 } },
+    { "condition": { "stat": "hunger",    "op": ">", "value": 75 }, "overrides": { "pupilScale": 1.15, "mouthClass": "mouth-open-small", "blushIntensity": 0.2 } },
+    { "condition": { "stat": "happiness", "op": "<", "value": 30 }, "overrides": { "pupilScale": 0.85, "mouthClass": "mouth-sad", "blushIntensity": 0.1, "earDrop": 10 } }
+  ],
+
+  "bodyAnimations": {
+    "idle":      { "y": [-3, 3], "scale": [1, 1.015] },
+    "happy":     { "y": [-4, 4], "scale": [1, 1.03] },
+    "excited":   { "y": [-8, 8], "rotate": [-3, 3], "scale": [1, 1.06, 1] },
+    "sleepy":    { "y": [0, 4], "scale": [1, 1.02] },
+    "loved":     { "y": [-4, 4], "scale": [1, 1.03] },
+    "eating":    { "y": [0, 2], "rotate": [-1, 1] },
+    "curious":   { "y": [-2, 2], "rotate": [-6, 0], "scale": [1, 1.02] },
+    "dancing":   { "y": [-12, 12], "rotate": [-6, 6], "scale": [0.97, 1.05] },
+    "grumpy":    { "y": [0, 1], "rotate": [-1, 1], "scale": [1, 1.01] },
+    "dizzy":     { "y": [-3, 3], "rotate": [-10, 10], "scale": [0.97, 1.03] },
+    "surprised": { "y": [-20, 0], "scale": [1.12, 1] }
+  },
+
+  "animationTimings": {
+    "excited":   { "duration": 0.3, "repeat": true },
+    "dancing":   { "duration": 0.4, "repeat": true },
+    "surprised": { "duration": 0.3, "repeat": false },
+    "dizzy":     { "duration": 0.5, "repeat": true },
+    "default":   { "duration": 2,   "repeat": true }
+  },
+
+  "mouseTraits": {
+    "dizzyFromShaking": {
+      "description": "Gets dizzy if you move the mouse around too fast",
+      "avgSpeedThreshold": 2.5,
+      "minSamples": 20,
+      "triggerDelayMs": 500,
+      "recoveryMs": 3000
+    },
+    "crossEyed": {
+      "description": "Goes cross-eyed when the mouse hovers right on the nose",
+      "noseProximityPx": 40,
+      "triggerDelayMs": 300
+    },
+    "stareContest": {
+      "description": "If you stop moving the mouse near Ember, it stares back then gets curious",
+      "idleThresholdMs": 1500,
+      "curiousAfterMs": 3000,
+      "maxDistancePx": 15
+    }
+  },
+
+  "actions": {
+    "pet":      { "mood": "loved",     "stats": { "happiness": 15, "love": 10 },               "durationMs": 2000 },
+    "feed":     { "mood": "eating",    "stats": { "hunger": -30, "happiness": 5 },              "durationMs": 2000 },
+    "play":     { "mood": "excited",   "stats": { "happiness": 20, "energy": -15 },             "durationMs": 2000,
+                  "override": { "condition": { "stat": "energy", "op": "<", "value": 15 }, "mood": "dizzy", "stats": { "energy": -5 } } },
+    "sleep":    { "mood": "sleepy",    "stats": { "energy": 30 },                               "durationMs": 3000 },
+    "dance":    { "mood": "dancing",   "stats": { "happiness": 25, "love": 5, "energy": -10 },  "durationMs": 3500 },
+    "surprise": { "mood": "surprised", "stats": { "happiness": 10 },                            "durationMs": 1500 }
+  },
+
+  "actionButtons": [
+    { "action": "feed",     "emoji": "🍪", "label": "Feed" },
+    { "action": "play",     "emoji": "🎾", "label": "Play" },
+    { "action": "dance",    "emoji": "💃", "label": "Dance" },
+    { "action": "sleep",    "emoji": "🌙", "label": "Sleep" },
+    { "action": "surprise", "emoji": "👻", "label": "Boo!" }
+  ],
+
+  "statBars": [
+    { "emoji": "😊", "stat": "happiness", "color": "#FF6B9D", "label": "Happy" },
+    { "emoji": "⚡", "stat": "energy",    "color": "#7DD3FC", "label": "Energy" },
+    { "emoji": "🍪", "stat": "hunger",    "color": "#FCA66B", "label": "Full", "invert": true },
+    { "emoji": "💕", "stat": "love",      "color": "#C084FC", "label": "Love" }
+  ],
+
+  "stats": {
+    "initial": { "happiness": 70, "energy": 80, "hunger": 30, "love": 50 },
+    "decayPerTick": { "happiness": -0.3, "energy": -0.2, "hunger": 0.4, "love": -0.15 },
+    "decayIntervalMs": 3000
+  },
+
+  "autonomousBehavior": {
+    "rules": [
+      { "condition": { "stat": "energy",    "op": "<", "value": 10 }, "chance": 0.3,  "mood": "sleepy" },
+      { "condition": { "stat": "hunger",    "op": ">", "value": 85 }, "chance": 0.25, "mood": "grumpy" },
+      { "condition": { "stat": "happiness", "op": "<", "value": 15 }, "chance": 0.2,  "mood": "grumpy" },
+      { "condition": "always",                                         "chance": 0.15, "mood": "curious" }
+    ],
+    "checkIntervalMs": [8000, 15000],
+    "autoResolveMs": 3000
+  },
+
+  "thoughtBubble": {
+    "initialDelayMs": 3000,
+    "intervalMs": [12000, 25000],
+    "displayMs": [4000, 6000]
+  }
+}

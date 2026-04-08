@@ -4,10 +4,12 @@ import { Pet } from './components/Pet';
 import { Particles } from './components/Particles';
 import { ActionBar } from './components/ActionBar';
 import { ThoughtBubble } from './components/ThoughtBubble';
+import { StatBar } from './components/StatBar';
 import { usePetState } from './hooks/usePetState';
 import { useAutonomousBehavior } from './hooks/useAutonomousBehavior';
 import { recordInteraction } from './services/personality';
 import type { PetAction, PetMood } from './types/pet';
+import config from './data/ember.json';
 import './App.css';
 
 function App() {
@@ -54,13 +56,13 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
         >
-          Ember
+          {config.name}
         </motion.h1>
 
         <div className="pet-wrapper">
           <ThoughtBubble state={state} />
           <Particles mood={state.mood} trigger={state.lastInteraction} />
-          <Pet state={state} onPet={() => handleAction('pet')} />
+          <Pet state={state} onPet={() => handleAction('pet')} onMoodChange={handleMoodChange} />
           <motion.div
             className="pet-shadow"
             animate={{
@@ -80,10 +82,19 @@ function App() {
 
       {/* Stat bars */}
       <div className="stats-bar">
-        <StatBar emoji="😊" value={state.stats.happiness} color="#FF6B9D" label="Happy" />
-        <StatBar emoji="⚡" value={state.stats.energy} color="#7DD3FC" label="Energy" />
-        <StatBar emoji="🍪" value={Math.max(0, 100 - state.stats.hunger)} color="#FCA66B" label="Full" />
-        <StatBar emoji="💕" value={state.stats.love} color="#C084FC" label="Love" />
+        {config.statBars.map((bar) => {
+          const rawValue = state.stats[bar.stat as keyof typeof state.stats];
+          const value = 'invert' in bar && bar.invert ? Math.max(0, 100 - rawValue) : rawValue;
+          return (
+            <StatBar
+              key={bar.stat}
+              emoji={bar.emoji}
+              value={value}
+              color={bar.color}
+              label={bar.label}
+            />
+          );
+        })}
       </div>
 
       <motion.p
@@ -92,24 +103,8 @@ function App() {
         animate={{ opacity: 0.35 }}
         transition={{ delay: 2, duration: 1 }}
       >
-        click on Ember to pet! 🔥
+        click on {config.name} to pet! 🔥
       </motion.p>
-    </div>
-  );
-}
-
-function StatBar({ emoji, value, color, label }: { emoji: string; value: number; color: string; label: string }) {
-  return (
-    <div className="stat-bar" title={label}>
-      <span className="stat-emoji">{emoji}</span>
-      <div className="stat-track">
-        <motion.div
-          className="stat-fill"
-          style={{ backgroundColor: color }}
-          animate={{ width: `${Math.max(2, value)}%` }}
-          transition={{ type: 'spring', stiffness: 80, damping: 15 }}
-        />
-      </div>
     </div>
   );
 }

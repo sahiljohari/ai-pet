@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PetMood } from '../types/pet';
+import config from '../data/ember.json';
 
 interface ParticlesProps {
   mood: PetMood;
@@ -15,13 +16,15 @@ interface Particle {
   size: number;
 }
 
+const particleMap = config.particles as Record<string, string[]>;
+
 export function Particles({ mood, trigger }: ParticlesProps) {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
     if (mood === 'idle') return;
 
-    const emojis = getEmojisForMood(mood);
+    const emojis = particleMap[mood] ?? particleMap.default;
     const count = mood === 'loved' ? 8 : 6;
     const newParticles: Particle[] = Array.from({ length: count }, (_, i) => ({
       id: Date.now() + i,
@@ -65,31 +68,4 @@ export function Particles({ mood, trigger }: ParticlesProps) {
       </AnimatePresence>
     </div>
   );
-}
-
-function getEmojisForMood(mood: PetMood): string[] {
-  switch (mood) {
-    case 'loved':
-      return ['💕', '💗', '💖', '✨', '💝'];
-    case 'happy':
-      return ['✨', '⭐', '💫', '🌟'];
-    case 'excited':
-      return ['⭐', '🌟', '✨', '💥', '🎉', '🎊'];
-    case 'eating':
-      return ['🍪', '🍓', '🍰', '✨', '😋'];
-    case 'sleepy':
-      return ['💤', '⭐', '🌙', '✨'];
-    case 'curious':
-      return ['❓', '🔍', '✨', '👀'];
-    case 'dancing':
-      return ['🎵', '🎶', '💃', '✨', '🪩'];
-    case 'grumpy':
-      return ['💢', '😤', '💨'];
-    case 'dizzy':
-      return ['💫', '🌀', '⭐', '😵‍💫'];
-    case 'surprised':
-      return ['❗', '⚡', '😱', '✨'];
-    default:
-      return ['✨'];
-  }
 }
