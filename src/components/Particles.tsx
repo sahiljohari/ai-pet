@@ -79,6 +79,16 @@ function getEmojisForMood(mood: PetMood): string[] {
       return ['🍪', '🍓', '🍰', '✨', '😋'];
     case 'sleepy':
       return ['💤', '⭐', '🌙', '✨'];
+    case 'curious':
+      return ['❓', '🔍', '✨', '👀'];
+    case 'dancing':
+      return ['🎵', '🎶', '💃', '✨', '🪩'];
+    case 'grumpy':
+      return ['💢', '😤', '💨'];
+    case 'dizzy':
+      return ['💫', '🌀', '⭐', '😵‍💫'];
+    case 'surprised':
+      return ['❗', '⚡', '😱', '✨'];
     default:
       return ['✨'];
   }

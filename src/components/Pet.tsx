@@ -46,8 +46,8 @@ export function Pet({ state, onPet }: PetProps) {
         className="pet-body"
         animate={getBodyAnimation(state.mood)}
         transition={{
-          duration: state.mood === 'excited' ? 0.3 : 2,
-          repeat: Infinity,
+          duration: state.mood === 'excited' ? 0.3 : state.mood === 'dancing' ? 0.4 : state.mood === 'surprised' ? 0.3 : state.mood === 'dizzy' ? 0.5 : 2,
+          repeat: state.mood === 'surprised' ? 0 : Infinity,
           repeatType: 'reverse',
           ease: 'easeInOut',
         }}
@@ -219,6 +219,16 @@ function getExpression(state: PetState): Expression {
       };
     case 'loved':
       return { ...base, eyesClosed: true, blushIntensity: 1, glowIntensity: 0.6, mouthClass: 'mouth-happy', earDrop: -8 };
+    case 'curious':
+      return { ...base, pupilScale: 1.25, blushIntensity: 0.3, glowIntensity: 0.2, mouthClass: 'mouth-curious', earDrop: -12 };
+    case 'dancing':
+      return { ...base, eyesClosed: true, blushIntensity: 0.7, glowIntensity: 0.4, mouthClass: 'mouth-dancing', earDrop: -8 };
+    case 'grumpy':
+      return { ...base, pupilScale: 0.7, blushIntensity: 0.05, mouthClass: 'mouth-grumpy', earDrop: 12 };
+    case 'dizzy':
+      return { ...base, pupilScale: 0.6, starEyes: true, blushIntensity: 0.3, mouthClass: 'mouth-dizzy', earDrop: 3 };
+    case 'surprised':
+      return { ...base, pupilScale: 1.5, blushIntensity: 0.5, glowIntensity: 0.3, mouthClass: 'mouth-surprised', earDrop: -15 };
     default: {
       const { happiness, energy, hunger } = state.stats;
       if (energy < 25) return { ...base, halfEyes: true, mouthClass: 'mouth-sleepy', earDrop: 6 };
@@ -240,6 +250,16 @@ function getBodyAnimation(mood: string) {
       return { y: [-4, 4], scale: [1, 1.03] };
     case 'eating':
       return { y: [0, 2], rotate: [-1, 1] };
+    case 'curious':
+      return { y: [-2, 2], rotate: [-6, 0], scale: [1, 1.02] };
+    case 'dancing':
+      return { y: [-12, 12], rotate: [-6, 6], scale: [0.97, 1.05] };
+    case 'grumpy':
+      return { y: [0, 1], rotate: [-1, 1], scale: [1, 1.01] };
+    case 'dizzy':
+      return { y: [-3, 3], rotate: [-10, 10], scale: [0.97, 1.03] };
+    case 'surprised':
+      return { y: [-20, 0], scale: [1.12, 1] };
     default:
       return { y: [-3, 3], scale: [1, 1.015] };
   }

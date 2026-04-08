@@ -76,16 +76,38 @@ export function usePetState() {
           };
           break;
         case 'play':
-          newMood = 'excited';
-          statChanges = {
-            happiness: Math.min(100, prev.stats.happiness + 20),
-            energy: Math.max(0, prev.stats.energy - 15),
-          };
+          // If energy is critically low, get dizzy instead
+          if (prev.stats.energy < 15) {
+            newMood = 'dizzy';
+            statChanges = {
+              energy: Math.max(0, prev.stats.energy - 5),
+            };
+          } else {
+            newMood = 'excited';
+            statChanges = {
+              happiness: Math.min(100, prev.stats.happiness + 20),
+              energy: Math.max(0, prev.stats.energy - 15),
+            };
+          }
           break;
         case 'sleep':
           newMood = 'sleepy';
           statChanges = {
             energy: Math.min(100, prev.stats.energy + 30),
+          };
+          break;
+        case 'dance':
+          newMood = 'dancing';
+          statChanges = {
+            happiness: Math.min(100, prev.stats.happiness + 25),
+            love: Math.min(100, prev.stats.love + 5),
+            energy: Math.max(0, prev.stats.energy - 10),
+          };
+          break;
+        case 'surprise':
+          newMood = 'surprised';
+          statChanges = {
+            happiness: Math.min(100, prev.stats.happiness + 10),
           };
           break;
       }
@@ -98,11 +120,33 @@ export function usePetState() {
       };
     });
 
-    const duration = action === 'sleep' ? 3000 : 2000;
+    const duration = action === 'sleep' ? 3000 : action === 'dance' ? 3500 : action === 'surprise' ? 1500 : 2000;
     moodTimeoutRef.current = setTimeout(() => {
-      setState(prev => ({ ...prev, mood: 'idle' }));
+      setState(prev => {
+        // After actions resolve, check if stats warrant a reactive mood
+        const { happiness, energy } = prev.stats;
+        if (happiness < 20 && energy > 15) return { ...prev, mood: 'grumpy' };
+        if (energy < 10) return { ...prev, mood: 'dizzy' };
+        return { ...prev, mood: 'idle' };
+      });
     }, duration);
+
+    // Grumpy/dizzy auto-resolve to idle after a bit
+    if (['surprise'].includes(action)) return;
+    const autoIdleTimeout = setTimeout(() => {
+      setState(prev => {
+        if (prev.mood === 'grumpy' || prev.mood === 'dizzy' || prev.mood === 'curious') {
+          return { ...prev, mood: 'idle' };
+        }
+        return prev;
+      });
+    }, 5000);
+    return () => clearTimeout(autoIdleTimeout);
   }, []);
 
-  return { state, performAction };
+  const setMood = useCallback((mood: PetMood) => {
+    setState(prev => ({ ...prev, mood, lastInteraction: Date.now() }));
+  }, []);
+
+  return { state, performAction, setMood };
 }

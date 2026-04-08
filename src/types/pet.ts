@@ -1,6 +1,6 @@
-export type PetMood = 'idle' | 'happy' | 'excited' | 'sleepy' | 'eating' | 'loved';
+export type PetMood = 'idle' | 'happy' | 'excited' | 'sleepy' | 'eating' | 'loved' | 'curious' | 'dancing' | 'grumpy' | 'dizzy' | 'surprised';
 
-export type PetAction = 'pet' | 'feed' | 'play' | 'sleep';
+export type PetAction = 'pet' | 'feed' | 'play' | 'sleep' | 'dance' | 'surprise';
 
 export interface PetStats {
   happiness: number;

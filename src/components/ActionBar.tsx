@@ -8,7 +8,9 @@ interface ActionBarProps {
 const actions: { action: PetAction; emoji: string; label: string }[] = [
   { action: 'feed', emoji: '🍪', label: 'Feed' },
   { action: 'play', emoji: '🎾', label: 'Play' },
+  { action: 'dance', emoji: '💃', label: 'Dance' },
   { action: 'sleep', emoji: '🌙', label: 'Sleep' },
+  { action: 'surprise', emoji: '👻', label: 'Boo!' },
 ];
 
 export function ActionBar({ onAction }: ActionBarProps) {

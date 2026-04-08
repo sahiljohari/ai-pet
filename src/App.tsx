@@ -1,12 +1,28 @@
+import { useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Pet } from './components/Pet';
 import { Particles } from './components/Particles';
 import { ActionBar } from './components/ActionBar';
+import { ThoughtBubble } from './components/ThoughtBubble';
 import { usePetState } from './hooks/usePetState';
+import { useAutonomousBehavior } from './hooks/useAutonomousBehavior';
+import { recordInteraction } from './services/personality';
+import type { PetAction, PetMood } from './types/pet';
 import './App.css';
 
 function App() {
-  const { state, performAction } = usePetState();
+  const { state, performAction, setMood } = usePetState();
+
+  const handleAction = useCallback((action: PetAction) => {
+    recordInteraction(action);
+    performAction(action);
+  }, [performAction]);
+
+  const handleMoodChange = useCallback((mood: PetMood) => {
+    setMood(mood);
+  }, [setMood]);
+
+  useAutonomousBehavior({ state, onMoodChange: handleMoodChange });
 
   return (
     <div className="app">
@@ -38,44 +54,45 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
         >
-          Mochi
+          Ember
         </motion.h1>
 
         <div className="pet-wrapper">
+          <ThoughtBubble state={state} />
           <Particles mood={state.mood} trigger={state.lastInteraction} />
-          <Pet state={state} onPet={() => performAction('pet')} />
+          <Pet state={state} onPet={() => handleAction('pet')} />
           <motion.div
             className="pet-shadow"
             animate={{
-              scaleX: state.mood === 'excited' ? [0.9, 1.1] : [0.95, 1.05],
-              opacity: state.mood === 'excited' ? [0.1, 0.2] : [0.12, 0.18],
+              scaleX: state.mood === 'excited' || state.mood === 'dancing' ? [0.85, 1.15] : [0.95, 1.05],
+              opacity: state.mood === 'excited' ? [0.08, 0.18] : [0.1, 0.15],
             }}
             transition={{
-              duration: state.mood === 'excited' ? 0.3 : 2,
+              duration: state.mood === 'excited' ? 0.3 : state.mood === 'dancing' ? 0.4 : 2,
               repeat: Infinity,
               repeatType: 'reverse',
             }}
           />
         </div>
 
-        <ActionBar onAction={performAction} />
+        <ActionBar onAction={handleAction} />
       </div>
 
       {/* Stat bars */}
       <div className="stats-bar">
-        <StatBar emoji="😊" value={state.stats.happiness} color="#FFB5E8" label="Happy" />
-        <StatBar emoji="⚡" value={state.stats.energy} color="#AFF8DB" label="Energy" />
-        <StatBar emoji="🍪" value={Math.max(0, 100 - state.stats.hunger)} color="#FFDAC1" label="Full" />
-        <StatBar emoji="💕" value={state.stats.love} color="#D5AAFF" label="Love" />
+        <StatBar emoji="😊" value={state.stats.happiness} color="#FF6B9D" label="Happy" />
+        <StatBar emoji="⚡" value={state.stats.energy} color="#7DD3FC" label="Energy" />
+        <StatBar emoji="🍪" value={Math.max(0, 100 - state.stats.hunger)} color="#FCA66B" label="Full" />
+        <StatBar emoji="💕" value={state.stats.love} color="#C084FC" label="Love" />
       </div>
 
       <motion.p
         className="hint-text"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
+        animate={{ opacity: 0.35 }}
         transition={{ delay: 2, duration: 1 }}
       >
-        click on Mochi to pet! 💕
+        click on Ember to pet! 🔥
       </motion.p>
     </div>
   );
