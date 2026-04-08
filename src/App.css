@@ -3,90 +3,231 @@
 /* ==================== */
 
 .app {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100vw; height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   background: linear-gradient(180deg, #0D0A1A 0%, #1A1030 40%, #150E25 100%);
-  overflow: hidden;
-  position: relative;
-  user-select: none;
+  overflow: hidden; position: relative; user-select: none;
 }
 
-.pet-scene {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 36px;
-  z-index: 1;
-}
-
-.pet-wrapper {
-  position: relative;
-  cursor: pointer;
-}
+.pet-scene { display: flex; flex-direction: column; align-items: center; gap: 30px; z-index: 1; }
+.pet-wrapper { position: relative; cursor: pointer; }
 
 /* ==================== */
 /* Pet Name             */
 /* ==================== */
 
 .pet-name {
-  font-family: 'Nunito', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  color: #D4C5F0;
-  text-align: center;
-  letter-spacing: 2px;
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 2px 10px rgba(255, 140, 50, 0.2);
-  margin: 0;
+  font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 800;
+  color: #D4C5F0; text-align: center; letter-spacing: 2px; margin: 0;
+  text-shadow: 0 0 20px rgba(168,85,247,0.4), 0 2px 10px rgba(255,140,50,0.2);
 }
 
 /* ==================== */
-/* Pet Body             */
+/* Pet Container        */
 /* ==================== */
 
 .pet-container {
-  position: relative;
-  width: 210px;
-  height: 252px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative; width: 220px; height: 270px;
+  display: flex; align-items: flex-start; justify-content: center;
 }
 
-.pet-svg {
-  display: block;
-  filter: drop-shadow(0 8px 25px rgba(120, 60, 200, 0.35));
-}
-
-/* (Body, face, eyes, ears, mouth, cheeks are now SVG — see Pet.tsx) */
+.pet-body-wrapper { position: relative; }
 
 /* ==================== */
 /* Glow Effect          */
 /* ==================== */
 
 .pet-glow {
-  position: absolute;
-  inset: -25px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255, 140, 50, 0.25) 0%, rgba(168, 85, 247, 0.15) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
+  position: absolute; inset: -25px; border-radius: 50%; pointer-events: none; z-index: -1;
+  background: radial-gradient(ellipse, rgba(255,140,50,0.25) 0%, rgba(168,85,247,0.15) 40%, transparent 70%);
 }
 
-/* (Ears, face, eyes, cheeks, mouth rules removed — now rendered as SVG in Pet.tsx) */
+/* ==================== */
+/* Head (main blob)     */
+/* ==================== */
+
+.pet-head {
+  width: 190px; height: 175px; position: relative; z-index: 2;
+  background: linear-gradient(145deg, #C4A0F5 0%, #A855F7 35%, #9333EA 65%, #7B52AE 100%);
+  border-radius: 50% 50% 46% 46% / 55% 55% 42% 42%;
+  box-shadow:
+    0 12px 40px rgba(120,60,200,0.4),
+    0 4px 15px rgba(168,85,247,0.3),
+    inset 0 -8px 20px rgba(0,0,0,0.15),
+    inset 0 8px 25px rgba(255,255,255,0.12);
+}
+
+/* ==================== */
+/* Torso + Paws + Tail  */
+/* ==================== */
+
+.pet-torso {
+  width: 80px; height: 45px; position: absolute; bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #9333EA 0%, #7B52AE 100%);
+  border-radius: 40% 40% 50% 50%; z-index: 1;
+  box-shadow: inset 0 5px 10px rgba(255,255,255,0.06);
+}
+
+.pet-paw {
+  width: 26px; height: 18px; position: absolute; bottom: 14px;
+  background: #8B5CF6; border-radius: 50%;
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 0;
+}
+.pet-paw-left  { left:  60px; }
+.pet-paw-right { right: 60px; }
+
+.pet-tail {
+  position: absolute; width: 35px; height: 55px; right: 5px; bottom: 35px;
+  border: 6px solid transparent; border-right-color: #9333EA;
+  border-radius: 0 50% 50% 0; z-index: 0;
+  transform: rotate(-15deg); transition: transform 0.4s ease;
+}
+.pet-tail-wag { animation: tail-wag 0.6s ease-in-out infinite alternate; }
+@keyframes tail-wag {
+  0%   { transform: rotate(-25deg); }
+  100% { transform: rotate(5deg); }
+}
+
+/* ==================== */
+/* Ears                 */
+/* ==================== */
+
+.pet-ear {
+  position: absolute; width: 44px; height: 54px;
+  background: linear-gradient(145deg, #6D3FA8 0%, #5C3D8F 100%);
+  border-radius: 50% 50% 38% 38% / 60% 60% 35% 35%;
+  top: -22px; z-index: -1;
+  box-shadow: inset 0 4px 10px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.3);
+}
+.pet-ear::after {
+  content: ''; position: absolute;
+  width: 26px; height: 32px;
+  background: linear-gradient(145deg, #F0A8A0 0%, #D4756B 100%);
+  border-radius: 50% 50% 35% 35% / 60% 60% 30% 30%;
+  top: 10px; left: 50%; transform: translateX(-50%);
+}
+.pet-ear-left  { left: 15px; }
+.pet-ear-right { right: 15px; }
+
+/* ==================== */
+/* Face                 */
+/* ==================== */
+
+.pet-face {
+  position: absolute; top: 36%; left: 50%;
+  transform: translate(-50%, -50%); width: 140px; height: 100px;
+}
+
+/* ==================== */
+/* Eyes                 */
+/* ==================== */
+
+.pet-eyes { display: flex; justify-content: space-between; padding: 0 10px; }
+
+.pet-eye {
+  width: 44px; height: 44px; background: #F0EBF5; border-radius: 50%;
+  position: relative; overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.12), 0 0 8px rgba(255,255,255,0.08);
+}
+
+/* Iris — radial gradient for anime sparkle look */
+.pet-iris {
+  width: 28px; height: 28px;
+  background: radial-gradient(circle at 38% 32%, #E9D5FF 0%, #C084FC 25%, #9333EA 55%, #581C87 100%);
+  border-radius: 50%; position: absolute;
+  top: 50%; left: 50%; margin-top: -14px; margin-left: -14px;
+}
+
+/* Dark pupil center */
+.pet-pupil-inner {
+  width: 16px; height: 16px; background: #0F0520; border-radius: 50%;
+  position: absolute; top: 50%; left: 50%; margin-top: -8px; margin-left: -8px;
+}
+
+/* Big sparkle highlight */
+.pet-highlight {
+  width: 10px; height: 10px; background: white; border-radius: 50%;
+  position: absolute; top: 2px; right: 1px;
+  box-shadow: 0 0 6px rgba(255,255,255,0.9);
+}
+
+/* Small sparkle highlight */
+.pet-highlight-sm {
+  width: 5px; height: 5px; background: white; border-radius: 50%;
+  position: absolute; bottom: 4px; left: 3px; opacity: 0.55;
+}
+
+/* Star eyes (excited/dizzy) */
+.pet-star-eye {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  color: #FFD700; font-size: 16px;
+  text-shadow: 0 0 8px rgba(255,215,0,0.8);
+  animation: star-spin 1s ease-in-out infinite;
+}
+@keyframes star-spin {
+  0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  50%      { transform: translate(-50%, -50%) scale(1.2) rotate(15deg); }
+}
+
+/* Closed eye (happy arc) */
+.pet-eye-closed {
+  width: 30px; height: 4px; background: #D4C5E8; border-radius: 2px;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+/* Half-open eye (sleepy) */
+.pet-eye-half {
+  position: absolute; inset: 0; overflow: hidden;
+  clip-path: inset(38% 0 0 0); border-radius: 50%;
+}
+
+/* ==================== */
+/* Cheeks               */
+/* ==================== */
+
+.pet-cheek {
+  width: 28px; height: 20px; border-radius: 50%; position: absolute; top: 52px;
+  background: radial-gradient(ellipse, rgba(255,120,60,0.5) 0%, transparent 70%);
+}
+.pet-cheek-left  { left: 0; }
+.pet-cheek-right { right: 0; }
+
+/* ==================== */
+/* Mouth                */
+/* ==================== */
+
+.pet-mouth-container { display: flex; justify-content: center; margin-top: 8px; }
+.pet-mouth { position: relative; }
+
+.mouth-smile       { width: 16px; height: 8px;  border-bottom: 3px solid #D4C5E8; border-radius: 0 0 50% 50%; }
+.mouth-happy       { width: 24px; height: 12px; border-bottom: 3px solid #D4C5E8; border-radius: 0 0 50% 50%; }
+.mouth-open-happy  { width: 20px; height: 16px; background: #1A0E2E; border-radius: 30% 30% 50% 50%; }
+.mouth-open-small  { width: 12px; height: 10px; background: #1A0E2E; border-radius: 50%; }
+.mouth-eating      { width: 16px; height: 12px; background: #1A0E2E; border-radius: 40% 40% 50% 50%; }
+.mouth-sleepy      { width: 12px; height: 6px;  border-bottom: 2px solid #D4C5E8; border-radius: 0 0 50% 50%; opacity: 0.6; }
+.mouth-sad         { width: 16px; height: 8px;  border-top: 3px solid #D4C5E8; border-radius: 50% 50% 0 0; margin-top: 6px; }
+.mouth-curious     { width: 10px; height: 10px; background: #1A0E2E; border-radius: 50%; }
+.mouth-dancing     { width: 26px; height: 14px; border-bottom: 3px solid #D4C5E8; border-radius: 0 0 50% 50%; }
+.mouth-grumpy      { width: 18px; height: 3px;  background: #D4C5E8; border-radius: 2px; opacity: 0.7; }
+.mouth-dizzy       { width: 14px; height: 8px;  border-bottom: 3px solid #D4C5E8; border-radius: 0 0 50% 50%;
+                     animation: dizzy-wobble 0.5s ease-in-out infinite; }
+.mouth-surprised   { width: 16px; height: 18px; background: #1A0E2E; border-radius: 50%; }
+
+@keyframes dizzy-wobble {
+  0%, 100% { transform: rotate(-5deg); }
+  50%      { transform: rotate(5deg); }
+}
 
 /* ==================== */
 /* Shadow               */
 /* ==================== */
 
 .pet-shadow {
-  width: 110px; height: 18px;
-  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  margin: 8px auto 0;
+  width: 120px; height: 18px; border-radius: 50%; margin: -6px auto 0;
+  background: radial-gradient(ellipse, rgba(168,85,247,0.15) 0%, transparent 70%);
 }
 
 /* ==================== */
@@ -94,18 +235,12 @@
 /* ==================== */
 
 .particles-container {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 10;
-  width: 0; height: 0;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none; z-index: 10; width: 0; height: 0;
 }
-
 .particle {
-  position: absolute;
-  pointer-events: none;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  position: absolute; pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
 }
 
 /* ==================== */
@@ -113,86 +248,48 @@
 /* ==================== */
 
 .thought-bubble {
-  position: absolute;
-  top: -20px;
-  left: calc(100% - 20px);
-  z-index: 20;
-  max-width: 200px;
-  min-width: 120px;
-  white-space: normal;
+  position: absolute; top: -20px; left: calc(100% - 20px);
+  z-index: 20; max-width: 200px; min-width: 120px; white-space: normal;
 }
-
 .thought-text {
-  background: rgba(30, 20, 55, 0.88);
-  backdrop-filter: blur(12px);
+  background: rgba(30,20,55,0.88); backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 16px;
-  padding: 10px 16px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 13px;
-  line-height: 1.4;
-  color: #E0D5F0;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168,85,247,0.3); border-radius: 16px;
+  padding: 10px 16px; font-family: 'Nunito', sans-serif;
+  font-size: 13px; line-height: 1.4; color: #E0D5F0; text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 15px rgba(168,85,247,0.1);
 }
-
 .thought-tail {
-  width: 12px; height: 12px;
-  background: rgba(30, 20, 55, 0.88);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-top: none;
-  border-right: none;
-  transform: rotate(45deg);
-  position: absolute;
-  bottom: 12px;
-  left: -6px;
+  width: 12px; height: 12px; background: rgba(30,20,55,0.88);
+  border: 1px solid rgba(168,85,247,0.3); border-top: none; border-right: none;
+  transform: rotate(45deg); position: absolute; bottom: 12px; left: -6px;
 }
 
 /* ==================== */
 /* Action Bar           */
 /* ==================== */
 
-.action-bar {
-  display: flex;
-  gap: 10px;
-}
+.action-bar { display: flex; gap: 10px; }
 
 .action-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   padding: 12px 16px;
-  background: rgba(25, 18, 45, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(25,18,45,0.75); backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(120, 80, 200, 0.25);
-  border-radius: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(120,80,200,0.25); border-radius: 16px;
+  cursor: pointer; outline: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
-  outline: none;
 }
-
 .action-button:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 12px rgba(168, 85, 247, 0.15);
-  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 12px rgba(168,85,247,0.15);
+  border-color: rgba(168,85,247,0.4);
 }
-
-.action-button:active {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
+.action-button:active { box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 .action-emoji { font-size: 26px; line-height: 1; }
-
 .action-label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: #A78BCA;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700;
+  color: #A78BCA; letter-spacing: 1px; text-transform: uppercase;
 }
 
 /* ==================== */
@@ -200,66 +297,36 @@
 /* ==================== */
 
 .stats-bar {
-  position: fixed;
-  bottom: 28px;
-  display: flex;
-  gap: 18px;
+  position: fixed; bottom: 28px; display: flex; gap: 18px;
   padding: 14px 24px;
-  background: rgba(20, 15, 40, 0.7);
-  backdrop-filter: blur(16px);
+  background: rgba(20,15,40,0.7); backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 22px;
-  border: 1px solid rgba(120, 80, 200, 0.2);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  z-index: 10;
+  border-radius: 22px; border: 1px solid rgba(120,80,200,0.2);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3); z-index: 10;
 }
-
-.stat-bar { display: flex; align-items: center; gap: 8px; }
+.stat-bar   { display: flex; align-items: center; gap: 8px; }
 .stat-emoji { font-size: 16px; line-height: 1; }
-
-.stat-track {
-  width: 72px; height: 7px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.stat-fill {
-  height: 100%;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
+.stat-track { width: 72px; height: 7px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.stat-fill  { height: 100%; border-radius: 4px; transition: background-color 0.3s; }
 
 /* ==================== */
 /* Hint Text            */
 /* ==================== */
 
 .hint-text {
-  position: fixed;
-  bottom: 80px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  color: #8B7AAE;
-  letter-spacing: 0.5px;
+  position: fixed; bottom: 80px; font-family: 'Nunito', sans-serif;
+  font-size: 14px; color: #8B7AAE; letter-spacing: 0.5px;
 }
 
 /* ==================== */
 /* Background Shapes    */
 /* ==================== */
 
-.bg-decorations {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
+.bg-decorations { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .bg-shape { position: absolute; border-radius: 50%; opacity: 0.06; }
-
 .bg-shape-0 { width: 200px; height: 200px; background: #7C3AED; top: 10%; left: 5%; }
 .bg-shape-1 { width: 150px; height: 150px; background: #A855F7; top: 60%; right: 8%; }
 .bg-shape-2 { width: 100px; height: 100px; background: #3B82F6; top: 15%; right: 15%; }
 .bg-shape-3 { width: 180px; height: 180px; background: #EC4899; bottom: 15%; left: 10%; }
-.bg-shape-4 { width: 80px; height: 80px; background: #6366F1; top: 45%; left: 20%; }
+.bg-shape-4 { width: 80px; height: 80px;   background: #6366F1; top: 45%; left: 20%; }
 .bg-shape-5 { width: 120px; height: 120px; background: #8B5CF6; bottom: 25%; right: 25%; }
