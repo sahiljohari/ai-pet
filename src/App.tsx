@@ -1,121 +1,100 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { motion } from 'framer-motion';
+import { Pet } from './components/Pet';
+import { Particles } from './components/Particles';
+import { ActionBar } from './components/ActionBar';
+import { usePetState } from './hooks/usePetState';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { state, performAction } = usePetState();
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <div className="app">
+      {/* Floating background shapes */}
+      <div className="bg-decorations">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className={`bg-shape bg-shape-${i}`}
+            animate={{
+              y: [0, -20, 0],
+              x: [0, 10, 0],
+              rotate: [0, 5, 0],
+            }}
+            transition={{
+              duration: 6 + i * 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.5,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="pet-scene">
+        <motion.h1
+          className="pet-name"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
         >
-          Count is {count}
-        </button>
-      </section>
+          Mochi
+        </motion.h1>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        <div className="pet-wrapper">
+          <Particles mood={state.mood} trigger={state.lastInteraction} />
+          <Pet state={state} onPet={() => performAction('pet')} />
+          <motion.div
+            className="pet-shadow"
+            animate={{
+              scaleX: state.mood === 'excited' ? [0.9, 1.1] : [0.95, 1.05],
+              opacity: state.mood === 'excited' ? [0.1, 0.2] : [0.12, 0.18],
+            }}
+            transition={{
+              duration: state.mood === 'excited' ? 0.3 : 2,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <ActionBar onAction={performAction} />
+      </div>
+
+      {/* Stat bars */}
+      <div className="stats-bar">
+        <StatBar emoji="😊" value={state.stats.happiness} color="#FFB5E8" label="Happy" />
+        <StatBar emoji="⚡" value={state.stats.energy} color="#AFF8DB" label="Energy" />
+        <StatBar emoji="🍪" value={Math.max(0, 100 - state.stats.hunger)} color="#FFDAC1" label="Full" />
+        <StatBar emoji="💕" value={state.stats.love} color="#D5AAFF" label="Love" />
+      </div>
+
+      <motion.p
+        className="hint-text"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ delay: 2, duration: 1 }}
+      >
+        click on Mochi to pet! 💕
+      </motion.p>
+    </div>
+  );
 }
 
-export default App
+function StatBar({ emoji, value, color, label }: { emoji: string; value: number; color: string; label: string }) {
+  return (
+    <div className="stat-bar" title={label}>
+      <span className="stat-emoji">{emoji}</span>
+      <div className="stat-track">
+        <motion.div
+          className="stat-fill"
+          style={{ backgroundColor: color }}
+          animate={{ width: `${Math.max(2, value)}%` }}
+          transition={{ type: 'spring', stiffness: 80, damping: 15 }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default App;
